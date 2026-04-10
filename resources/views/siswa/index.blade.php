@@ -10,7 +10,7 @@
         </h1>
         <div class="page-options d-flex">
             <div class="input-icon ml-2">
-                
+
                 <form action="" method="GET">
                     <span class="input-icon-addon">
                         <i class="fe fe-search"></i>
@@ -36,7 +36,7 @@
                     @if(session()->get('type') == 'success')
                         <i class="fe fe-check mr-2" aria-hidden="true"></i>
                     @else
-                        <i class="fe fe-alert-triangle mr-2" aria-hidden="true"></i> 
+                        <i class="fe fe-alert-triangle mr-2" aria-hidden="true"></i>
                     @endif
                         {{ session()->get('msg') }}
                 </div>
@@ -51,7 +51,7 @@
                             <th>Wali</th>
                             <th>Telp. Wali</th>
                             <th>Yatim</th>
-                            <th></th> 
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -77,16 +77,16 @@
                                 </td>
                                 <td class="text-center">
                                     <a class="icon" href="{{ route('siswa.show', $item->id) }}" title="lihat detail">
-                                        <i class="fe fe-eye"></i> 
+                                        <i class="fe fe-eye"></i>
                                     </a>
                                     <a class="icon" href="{{ route('siswa.edit', $item->id) }}" title="edit item">
-                                        <i class="fe fe-edit"></i> 
+                                        <i class="fe fe-edit"></i>
                                     </a>
                                     <a class="icon btn-delete" href="#!" data-id="{{ $item->id }}" title="delete item">
                                         <i class="fe fe-trash"></i>
                                     </a>
                                     <form action="{{ route('siswa.destroy', $item->id) }}" method="POST" id="form-{{ $item->id }}">
-                                        @csrf 
+                                        @csrf
                                     </form>
                                 </td>
                             </tr>

@@ -21,20 +21,20 @@
                     @if(session()->get('type') == 'success')
                         <i class="fe fe-check mr-2" aria-hidden="true"></i>
                     @else
-                        <i class="fe fe-alert-triangle mr-2" aria-hidden="true"></i> 
+                        <i class="fe fe-alert-triangle mr-2" aria-hidden="true"></i>
                     @endif
                         {{ session()->get('msg') }}
                 </div>
                 @endif
                 <div class="table-responsive">
-                    
+
                     <table class="table card-table table-hover table-vcenter text-nowrap">
                         <thead>
                         <tr>
                             <th class="w-1">No.</th>
                             <th>Periode</th>
                             <th>Nama</th>
-                            <th></th> 
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -53,7 +53,7 @@
                                         <i class="fe fe-trash"></i>
                                     </a>
                                     <form action="{{ route('kelas.destroy', $item->id) }}" method="POST" id="form-{{ $item->id }}">
-                                        @csrf 
+                                        @csrf
                                     </form>
                                 </td>
                             </tr>

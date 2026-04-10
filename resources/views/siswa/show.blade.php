@@ -3,7 +3,7 @@
 @section('page-name','Siswa')
 
 @section('content')
-    <div class="row">
+    <div class="row gy-3">
         <div class="col-12 col-md-12">
             <div class="card">
                 <div class="card-header">
@@ -12,7 +12,7 @@
                 <div class="card-body">
                     <p><b>Kelas</b> : {{$siswa->kelas->nama}} </p>
                     <p>
-                        <b>Nama</b> : {{$siswa->nama}} 
+                        <b>Nama</b> : {{$siswa->nama}}
                         @if($siswa->is_yatim)
                             <span class="tag tag-green">Yatim</span>
                         @endif
@@ -30,9 +30,9 @@
                 <div class="card-header">
                     <h3 class="card-title">Tabungan</h3>
                     @if($saldo != '0')
-                    <div class="card-options"> 
-                        <a href="{{ route('tabungan.cetak', $siswa->id) }}" target="_blank" class="btn btn-primary mr-1">Cetak</a>
-                        <a href="{{ route('tabungan.siswa.export', $siswa->id) }}" target="_blank" class="btn btn-primary">Export</a>
+                    <div class="card-options">
+                        {{-- <a href="{{ route('tabungan.cetak', $siswa->id) }}" target="_blank" class="btn btn-primary mr-1">Cetak</a> --}}
+                        {{-- <a href="{{ route('tabungan.siswa.export', $siswa->id) }}" target="_blank" class="btn btn-primary">Export</a> --}}
                     </div>
                     @endif
                 </div>
@@ -44,7 +44,7 @@
                             <th>KD</th>
                             <th>Jumlah</th>
                             <th>Keterangan</th>
-                        </tr> 
+                        </tr>
                         @foreach($tabungan as $item)
                         <tr>
                             <td>{{ $item->created_at->format('d-m-Y') }}</td>
@@ -76,9 +76,9 @@
                     <h3 class="card-title">Tagihan SPP</h3>
                     @if(!$siswa->is_yatim)
                     <div class="card-options">
-                        <input class="form-control mr-2" type="text" name="dates" style="max-width: 200px" id="daterange" value="{{ now()->subDay(7)->format('m-d-Y')." - ".now()->format('m-d-Y') }}">
-                        <button id="btn-cetak-spp" class="btn btn-primary mr-1" value="{{ $siswa->id }}">Cetak</button>
-                        <button id="btn-export-spp" class="btn btn-primary" value="{{ $siswa->id }}">Export</button>
+                        {{-- <input class="form-control mr-2" type="text" name="dates" style="max-width: 200px" id="daterange" value="{{ now()->subDay(7)->format('m-d-Y')." - ".now()->format('m-d-Y') }}"> --}}
+                        {{-- <button id="btn-cetak-spp" class="btn btn-primary mr-1" value="{{ $siswa->id }}">Cetak</button> --}}
+                        {{-- <button id="btn-export-spp" class="btn btn-primary" value="{{ $siswa->id }}">Export</button> --}}
                     </div>
                     @endif
                 </div>
@@ -93,7 +93,7 @@
                             <th>Lunas</th>
                             <th>Tanggal</th>
                             <th>Keterangan</th>
-                        </tr> 
+                        </tr>
                         @foreach($tagihan as $item)
                         <tr>
                             <td>{{ $item['nama'] }}</td>
@@ -103,7 +103,7 @@
                                     <span class="tag tag-green">Lunas</span>
                                 @else
                                     <span class="tag tag-purple">Belum</span>
-                                @endif 
+                                @endif
                             </td>
                             <td>{{ $item['created_at'] }}</td>
                             <td>{{ $item['keterangan'] }}</td>
@@ -132,11 +132,11 @@
             form.setAttribute("method", "post");
             form.setAttribute("action", "{{ route('spp.print') }}/" + this.value);
             form.setAttribute("target", "_blank");
-            
+
             var token = document.createElement("input");
             token.setAttribute("name", "_token");
             token.setAttribute("value", "{{csrf_token()}}");
-            
+
             var dateForm = document.createElement("input");
             dateForm.setAttribute("name", "dates");
             dateForm.setAttribute("value", $('#daterange').val());
@@ -156,11 +156,11 @@
             form.setAttribute("method", "post");
             form.setAttribute("action", "{{ route('spp.export') }}/" + this.value);
             form.setAttribute("target", "_blank");
-            
+
             var token = document.createElement("input");
             token.setAttribute("name", "_token");
             token.setAttribute("value", "{{csrf_token()}}");
-            
+
             var dateForm = document.createElement("input");
             dateForm.setAttribute("name", "dates");
             dateForm.setAttribute("value", $('#daterange').val());

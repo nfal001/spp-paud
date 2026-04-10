@@ -21,13 +21,13 @@
                     @if(session()->get('type') == 'success')
                         <i class="fe fe-check mr-2" aria-hidden="true"></i>
                     @else
-                        <i class="fe fe-alert-triangle mr-2" aria-hidden="true"></i> 
+                        <i class="fe fe-alert-triangle mr-2" aria-hidden="true"></i>
                     @endif
                         {{ session()->get('msg') }}
                 </div>
                 @endif
                 <div class="table-responsive">
-                    
+
                     <table class="table card-table table-hover table-vcenter text-wrap">
                         <thead>
                         <tr>
@@ -67,7 +67,7 @@
                                         <i class="fe fe-trash"></i>
                                     </a>
                                     <form action="{{ route('tagihan.destroy', $item->id) }}" method="POST" id="form-{{ $item->id }}">
-                                        @csrf 
+                                        @csrf
                                     </form>
                                 </td>
                             </tr>

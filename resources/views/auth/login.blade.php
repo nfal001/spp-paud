@@ -26,8 +26,10 @@
 			baseUrl: '{{ route('web.index') }}'
 		});
 	</script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
 	<!-- Dashboard Core -->
-	<link href="{{ asset('css/dashboard.css') }}" rel="stylesheet" />
+	{{-- <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet" /> --}}
 	<script src="{{ asset('assets/js/dashboard.js')}}"></script>
 	<!-- c3.js Charts Plugin -->
 	<link href="{{ asset('assets/plugins/charts-c3/plugin.css')}}" rel="stylesheet" />

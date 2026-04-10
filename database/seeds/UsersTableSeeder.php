@@ -14,11 +14,39 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+        // Admin
         DB::table('users')->insert([
             'name' => 'admin',
-            'email' => 'admin@admin.com',
+            'email' => 'admin@gmail.com',
             'password' => bcrypt('password'),
             'role' => 'Admin',
+            'created_at' => now()
+        ]);
+
+        // Admin2
+        DB::table('users')->insert([
+            'name' => 'admin2',
+            'email' => 'admin2@gmail.com',
+            'password' => bcrypt('password'),
+            'role' => 'Admin',
+            'created_at' => now()
+        ]);
+
+        // Superadmin
+        DB::table('users')->insert([
+            'name' => 'superadmin',
+            'email' => 'superadmin@gmail.com',
+            'password' => bcrypt('password'),
+            'role' => 'SuperAdmin',
+            'created_at' => now()
+        ]);
+
+        // Bendahara
+        DB::table('users')->insert([
+            'name' => 'bendahara',
+            'email' => 'bendahara@gmail.com',
+            'password' => bcrypt('password'),
+            'role' => 'Bendahara',
             'created_at' => now()
         ]);
     }

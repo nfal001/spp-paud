@@ -41,7 +41,7 @@ class TransaksiController extends Controller
             'keterangan' => ($request->via == 'tabungan' ? 'dibayarkan melalui tabungan' : 'dibayarkan secara tunai, ').
                             ', '.$request->keterangan,
         ]);
-        
+
         //menyimpan transaksi
         if($transaksi->save()){
             //tambahkan transaksi ke keuangan
@@ -60,7 +60,7 @@ class TransaksiController extends Controller
                                 ', '.$request->keterangan
             ]);
         }
-        
+
         // jika pembayaran dilakukan melalui tabungan
         if($request->via == 'tabungan'){
             $tabungan = Tabungan::where('siswa_id', $siswa->id)->orderBy('created_at','desc')->first();
@@ -100,7 +100,7 @@ class TransaksiController extends Controller
                 'msg' => 'terjadi kesalahan'
             ]);
         }
-        
+
     }
 
     public function transaksiExport()
@@ -134,7 +134,7 @@ class TransaksiController extends Controller
     {
         $beweendate = [];
         $dates = explode('-',$request->dates);
-        
+
         foreach($dates as $index => $date){
             if($index == 0){
                 $date .= ' 00:00:00';
@@ -176,7 +176,7 @@ class TransaksiController extends Controller
     {
         $beweendate = [];
         $dates = explode('-',$request->dates);
-        
+
         foreach($dates as $index => $date){
             if($index == 0){
                 $date .= ' 00:00:00';

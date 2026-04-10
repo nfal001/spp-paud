@@ -19,7 +19,7 @@
                     @if(session()->get('type') == 'success')
                         <i class="fe fe-check mr-2" aria-hidden="true"></i>
                     @else
-                        <i class="fe fe-alert-triangle mr-2" aria-hidden="true"></i> 
+                        <i class="fe fe-alert-triangle mr-2" aria-hidden="true"></i>
                     @endif
                         {{ session()->get('msg') }}
                 </div>
@@ -49,7 +49,7 @@
                                 <div class="form-group" style="display: none" id="form-tagihan">
                                     <label class="form-label" >Tagihan</label>
                                     <select id="tagihan" class="form-control" name="tagihan_id">
-                                        
+
                                     </select>
                                 </div>
                                 <div class="form-group" style="display: none" id="form-tagihan-2">
@@ -135,7 +135,7 @@
                                 <td>
                                     <label class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input tandai" name="example-checkbox2" value="{{ $item->id }}">
-                                        <span class="custom-control-label">Tandai</span> 
+                                        <span class="custom-control-label">Tandai</span>
                                     </label>
                                 </td>
                             </tr>
@@ -177,17 +177,17 @@
                 placeholder: "Pilih Siswa",
             });
             $('#tagihan').select2({});
-            
+
             var siswa_id;   //siswa_id
             var tagihan_id; //tagihan_id
             var saldo;      //saldo dari siswa
             var harga;      //harga dari tagihan
             var diskon = 0; //diskon
-            var via = 'tunai';  //pembayaran via 
+            var via = 'tunai';  //pembayaran via
             // memilih siswa
             $('#siswa').on('change',function(){
                 if(this.value == '#'){
-                    $('#saldo').text('0') 
+                    $('#saldo').text('0')
                     $('#form-tagihan').hide()
                     $('#form-tagihan-2').hide()
                     $('#form-total').hide()
@@ -212,8 +212,8 @@
                         }
                         $('#form-keterangan').show()
                         $('#btn-simpan').show()
-                    }, beforeSend: function(){ 
-                        $('#saldo').text('tunggu, sedang mengambil saldo.....') 
+                    }, beforeSend: function(){
+                        $('#saldo').text('tunggu, sedang mengambil saldo.....')
                         $('#form-tagihan').hide()
                         $('#form-tagihan-2').hide()
                         $('#form-total').hide()
@@ -326,7 +326,7 @@
                         }
                     });
                 }
-                
+
             })
 
             $('#mass-cetak').on('click', function(){
@@ -342,11 +342,11 @@
                 form.setAttribute("method", "post");
                 form.setAttribute("action", "{{ route('transaksi.print') }}");
                 form.setAttribute("target", "_blank");
-                
+
                 var token = document.createElement("input");
                 token.setAttribute("name", "_token");
                 token.setAttribute("value", "{{csrf_token()}}");
-                
+
                 var idsForm = document.createElement("input");
                 idsForm.setAttribute("name", "ids");
                 idsForm.setAttribute("value", ids);

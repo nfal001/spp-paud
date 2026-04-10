@@ -116,7 +116,7 @@ class TagihanController extends Controller
         ]);
 
         $tagihan->fill($request->except('kelas_id'));
-        
+
         //remove all related
         $tagihan->siswa()->detach();
         $tagihan->kelas_id = null;
