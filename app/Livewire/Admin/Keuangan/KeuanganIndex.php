@@ -24,7 +24,39 @@ class KeuanganIndex extends Component
 
     public function createTransaction()
     {
-        dd($this->transactionType, $this->transactionTotal, $this->transactionNote);
+        $this->validate([
+            'transactionType' => 'required|in:in,out',
+            'transactionTotal' => 'required|numeric|min:1',
+            'transactionNote' => 'nullable',
+        ]);
+
+        $keuanganTerakhir = Keuangan::orderBy('created_at', 'desc')->first();
+
+        $simpan = Keuangan::make([
+            'tipe' => $this->transactionType,
+            'jumlah' => $this->transactionTotal,
+            'keterangan' => $this->transactionNote,
+        ]);
+
+        if ($keuanganTerakhir != null) {
+            if ($this->transactionType == 'in') {
+                $simpan->total_kas = $keuanganTerakhir->total_kas + $this->transactionTotal;
+            } else {
+                $simpan->total_kas = $keuanganTerakhir->total_kas - $this->transactionTotal;
+            }
+        } else {
+            $simpan->total_kas = $this->transactionTotal;
+        }
+
+        if ($simpan->save()) {
+            $this->reset(['transactionType', 'transactionTotal', 'transactionNote', 'transactionSelected']);
+
+            session()->flash('type', 'success');
+            session()->flash('msg', 'Pencatatan Keuangan dibuat');
+        } else {
+            session()->flash('type', 'danger');
+            session()->flash('msg', 'Terjadi Kesalahan');
+        }
     }
 
     #[Computed]
@@ -54,3 +86,4 @@ class KeuanganIndex extends Component
         return view('livewire.admin.keuangan.keuangan-index');
     }
 }
+

@@ -32,7 +32,6 @@
                         @endif
                         <div class="row">
                             <div class="col-12">
-                                @csrf
                                 <div class="form-group">
                                     <label class="form-label">Keperluan</label>
                                     <div class="selectgroup w-100">
@@ -62,7 +61,11 @@
                             </div>
                         </div>
                         <div class="mt-2" wire:show='transactionSelected' wire:loading.remove>
-                            <button id="submit" class="btn btn-primary ml-auto">Simpan</button>
+                            <button id="submit" class="btn btn-primary ml-auto"
+                                wire:loading.attr='disabled' wire:target='createTransaction'>
+                                <span class="spinner-border spinner-border-sm me-1" wire:loading wire:target='createTransaction'></span>
+                                Simpan
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -120,7 +123,7 @@
                 <div class="card-footer">
                     <div class="d-flex">
                         <div class="ml-auto mb-0">
-                            ?
+                            {{ $this->keuangan->links() }}
                         </div>
                     </div>
                 </div>

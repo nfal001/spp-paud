@@ -30,7 +30,6 @@ class KelasTambah extends Component
         $this->validateOnly($prop);
     }
 
-    //region LifeCycle
     public function submit()
     {
         $this->validate();
@@ -43,12 +42,12 @@ class KelasTambah extends Component
         if ($kelas->save()) {
             session()->flash('type', 'success');
             session()->flash('msg', 'Kelas berhasil ditambahkan');
-            return redirect()->route('web.admin.kelas.index');
         } else {
             session()->flash('type', 'danger');
             session()->flash('msg', 'Err.., Terjadi Kesalahan');
-            return redirect()->route('web.admin.kelas.index');
         }
+
+        $this->redirectRoute('web.admin.kelas.index', navigate: true);
     }
 
     #[Title('Tambah Kelas')]

@@ -2,8 +2,10 @@
 
 namespace App\Livewire\Admin\Tabungan;
 
+use App\Models\Keuangan;
 use App\Models\Siswa;
 use App\Models\Tabungan;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -55,7 +57,105 @@ class TabunganIndex extends Component
 
     public function createTransaction()
     {
-        dd($this);
+        $siswa = Siswa::findOrFail($this->selectedSiswaId);
+        $jumlah = preg_replace("/[,.]/", "", $this->transactionTotalAmount);
+        $tipe = $this->transactionType; // 'in' or 'out'
+
+        // validasi jumlah
+        if ($jumlah <= 0) {
+            session()->flash('type', 'danger');
+            session()->flash('msg', 'Jumlah harus lebih dari 0');
+            return;
+        }
+
+        // validasi penarikan
+        if ($tipe == 'out') {
+            $saldo = $this->siswaSaldo['saldo'];
+            if ($saldo <= 0 || $saldo < $jumlah) {
+                session()->flash('type', 'danger');
+                session()->flash('msg', 'Tidak dapat melakukan penarikan, saldo ' . $saldo . ' dengan jumlah ' . $jumlah);
+                return;
+            }
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $tabunganTerakhir = Tabungan::where('siswa_id', $siswa->id)
+                ->orderBy('created_at', 'desc')->first();
+
+            if ($tabunganTerakhir != null) {
+                if ($tipe == 'in') {
+                    $saldoBaru = $jumlah + $tabunganTerakhir->saldo;
+                } else {
+                    $saldoBaru = $tabunganTerakhir->saldo - $jumlah;
+                }
+
+                if ($saldoBaru < 0) {
+                    DB::rollBack();
+                    session()->flash('type', 'danger');
+                    session()->flash('msg', 'Transaksi gagal, saldo tidak mencukupi');
+                    return;
+                }
+
+                $menabung = Tabungan::create([
+                    'siswa_id' => $siswa->id,
+                    'tipe' => $tipe,
+                    'jumlah' => $jumlah,
+                    'saldo' => $saldoBaru,
+                    'keperluan' => $this->transactionReason,
+                ]);
+            } else {
+                // first-time deposit
+                $menabung = Tabungan::create([
+                    'siswa_id' => $siswa->id,
+                    'tipe' => $tipe,
+                    'jumlah' => $jumlah,
+                    'saldo' => $jumlah,
+                    'keperluan' => $this->transactionReason,
+                ]);
+            }
+
+            // tambahkan tabungan ke keuangan
+            $keuanganTerakhir = Keuangan::orderBy('created_at', 'desc')->first();
+
+            if ($keuanganTerakhir != null) {
+                if ($menabung->tipe == 'in') {
+                    $totalKas = $keuanganTerakhir->total_kas + $menabung->jumlah;
+                } else {
+                    $totalKas = $keuanganTerakhir->total_kas - $menabung->jumlah;
+                }
+            } else {
+                $totalKas = $menabung->jumlah;
+            }
+
+            Keuangan::create([
+                'tabungan_id' => $menabung->id,
+                'tipe' => $menabung->tipe,
+                'jumlah' => $menabung->jumlah,
+                'total_kas' => $totalKas,
+                'keterangan' => 'Transaksi tabungan oleh ' . $menabung->siswa->nama
+                    . '(' . $menabung->siswa->kelas->nama . ')'
+                    . ($tipe == 'in' ? ' menabung' : ' melakukan penarikan tabungan')
+                    . ' sebesar ' . $menabung->jumlah
+                    . ' pada ' . $menabung->created_at
+                    . ' dengan total tabungan ' . $menabung->saldo
+                    . (isset($menabung->keperluan) ? ' dengan catatan: ' . $menabung->keperluan : ''),
+            ]);
+
+            DB::commit();
+
+            // reset form
+            $this->reset(['selectedSiswaId', 'transactionType', 'transactionTotalAmount', 'transactionReason']);
+
+            session()->flash('type', 'success');
+            session()->flash('msg', 'Berhasil melakukan transaksi');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            session()->flash('type', 'danger');
+            session()->flash('msg', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     #[Layout('layouts.app')]
@@ -65,3 +165,4 @@ class TabunganIndex extends Component
         return view('livewire.admin.tabungan.tabungan-index');
     }
 }
+

@@ -22,7 +22,6 @@
                     </div>
                 @endif
                 <div class="card-body">
-                    {{-- <form action="{{ route('keuangan.store') }}" method="post"> --}}
                     @if ($errors->any())
                         <div class="alert alert-danger">
                             @foreach ($errors->all() as $error)
@@ -32,7 +31,6 @@
                     @endif
                     <div class="row">
                         <div class="col-12">
-                            @csrf
                             <div class="form-group mb-2">
                                 <label class="form-label">Siswa</label>
                                 <select id="siswa" class="form-control" name="siswa_id" wire:model.live='siswaId'>
@@ -117,17 +115,20 @@
                                 <div class="form-group mb-2" style="" id="form-keterangan" wire:loading.remove
                                     wire:target='siswaId'>
                                     <label class="form-label">Keterangan</label>
-                                    <textarea name="keterangan" id="keterangan" rows="3" class="form-control"></textarea>
+                                    <textarea name="keterangan" id="keterangan" rows="3" class="form-control" wire:model='note'></textarea>
                                 </div>
                             @endif
                         </div>
                     </div>
                     <div wire:loading.remove wire:target='siswaId'>
                         @if ($this->siswaDetail)
-                            <button class="btn btn-primary ml-auto" style="" id="btn-simpan">Simpan</button>
+                            <button class="btn btn-primary ml-auto" wire:click='store'
+                                wire:loading.attr='disabled' wire:target='store'>
+                                <span class="spinner-border spinner-border-sm me-1" wire:loading wire:target='store'></span>
+                                Simpan
+                            </button>
                         @endif
                     </div>
-                    {{-- </form> --}}
                 </div>
             </div>
         </div>
@@ -184,7 +185,7 @@
                 <div class="card-footer">
                     <div class="d-flex">
                         <div class="ml-auto mb-0">
-                            {{ 22 ?? $transaksi->links() }}
+                            {{ $this->listTransaksi->links() }}
                         </div>
                     </div>
                 </div>

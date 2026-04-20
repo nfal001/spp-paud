@@ -84,7 +84,10 @@
                     </div>
                     @if ($this->selectedSiswaId)
                         <div class="" style="" id="form-submit" wire:loading.remove wire:target='transactionType,selectedSiswaId'>
-                            <button wire:target='createTransaction' wire:loading.class='opacity-80' wire:click='createTransaction' class="btn btn-primary ml-auto">Simpan</button>
+                            <button wire:click='createTransaction' wire:loading.attr='disabled' wire:target='createTransaction' class="btn btn-primary ml-auto">
+                                <span class="spinner-border spinner-border-sm me-1" wire:loading wire:target='createTransaction'></span>
+                                Simpan
+                            </button>
                         </div>
                     @endif
                     {{-- </form> --}}
